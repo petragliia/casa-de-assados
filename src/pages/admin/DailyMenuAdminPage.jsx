@@ -51,10 +51,10 @@ export default function DailyMenuAdminPage() {
 
     const currentMenu = localMenus[activeTab];
 
-    const inputClasses = "w-full px-3 py-1.5 bg-background border border-surface-light rounded text-text-primary focus:outline-none focus:border-brand/50 transition-colors text-xs";
-    const labelClasses = "block mb-1.5 text-[10px] font-bold tracking-widest uppercase text-text-secondary";
-    const sectionClasses = "bg-surface p-4 sm:p-6 rounded-xl border border-surface-light mb-6";
-    const sectionTitleClasses = "font-serif text-lg border-b border-surface-light pb-2 mb-4 text-brand";
+    const inputClasses = "w-full px-4 py-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300 text-sm placeholder:text-text-muted/50";
+    const labelClasses = "block mb-2 text-[10px] font-black tracking-widest uppercase text-text-muted";
+    const sectionClasses = "bg-[#1A1A1A]/60 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/5 mb-8 shadow-xl shadow-black/20 relative z-0 overflow-hidden";
+    const sectionTitleClasses = "font-serif text-xl border-b border-white/10 pb-3 mb-6 text-brand tracking-wide relative z-10";
 
     const renderEditableList = (listName, title) => {
         if (!currentMenu.hasOwnProperty(listName) && listName !== 'adicionar_depois') return null;
@@ -63,11 +63,11 @@ export default function DailyMenuAdminPage() {
 
         return (
             <div className="mb-8">
-                <div className="flex items-center justify-between border-b border-surface-light pb-2 mb-3">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4 relative z-10">
                     <h3 className="font-bold text-white uppercase tracking-wider text-xs">{title}</h3>
                     <button 
                         onClick={() => addItem(activeTab, listName)}
-                        className="text-brand hover:text-brand-light flex items-center gap-1 text-[10px] font-bold bg-brand/10 px-2 py-1 rounded transition-colors"
+                        className="text-brand hover:text-white flex items-center gap-1 text-[10px] font-bold bg-brand/10 hover:bg-brand px-3 py-1.5 rounded-lg transition-all duration-300 shadow-sm hover:shadow-[0_0_15px_rgba(209,103,42,0.4)]"
                     >
                         <Plus size={12} /> ADICIONAR
                     </button>
@@ -97,7 +97,7 @@ export default function DailyMenuAdminPage() {
                             </div>
                             <button 
                                 onClick={() => removeItem(activeTab, listName, idx)}
-                                className="text-danger/60 hover:text-danger p-1.5 transition-colors shrink-0"
+                                className="text-danger/60 hover:text-danger p-2 bg-black/40 hover:bg-danger/10 border border-transparent hover:border-danger/30 rounded-xl transition-all duration-300 shrink-0 hover:shadow-[0_0_10px_rgba(239,68,68,0.2)]"
                                 title="Remover item"
                             >
                                 <Trash2 size={16} />
@@ -111,28 +111,34 @@ export default function DailyMenuAdminPage() {
 
     return (
         <div className="max-w-5xl text-text-primary pb-20">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-surface-light gap-4">
-                <div className="flex items-center gap-3">
-                    <CalendarDays size={24} className="text-brand" />
-                    <h1 className="text-2xl font-serif font-bold text-white uppercase tracking-wide">Cardápio Diário</h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-6 border-b border-white/10 gap-4 relative">
+                <div className="absolute top-0 left-0 w-32 h-32 bg-brand/10 rounded-full blur-[60px] -z-10 pointer-events-none"></div>
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-brand/10 rounded-xl border border-brand/20">
+                        <CalendarDays size={28} className="text-brand" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-serif font-bold text-white uppercase tracking-wide">Cardápio Diário</h1>
+                        <p className="text-text-muted font-medium italic mt-1 text-sm">Organize as marmitas de cada dia</p>
+                    </div>
                 </div>
-                <Button variant="primary" onClick={handleSave} className="flex items-center gap-2 shadow-sm text-xs py-2 px-4 w-full sm:w-auto justify-center">
-                    <Save size={16} /> Salvar Alterações
+                <Button variant="primary" onClick={handleSave} className="flex items-center gap-2 shadow-[0_0_20px_rgba(209,103,42,0.3)] hover:shadow-[0_0_30px_rgba(209,103,42,0.5)] transition-all duration-300 text-sm py-2.5 px-6 w-full sm:w-auto justify-center">
+                    <Save size={18} /> Salvar Alterações
                 </Button>
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-6 flex-wrap pb-2">
+            <div className="flex gap-2 mb-8 flex-wrap p-1.5 bg-black/40 backdrop-blur-md rounded-xl border border-white/5 shadow-inner">
                 {[2, 3, 4, 5, 6, 0].map(day => {
                     const isActive = activeTab === day;
                     return (
                         <button
                             key={day}
                             onClick={() => setActiveTab(day)}
-                            className={`px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all whitespace-nowrap ${
+                            className={`px-4 py-2.5 rounded-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 whitespace-nowrap flex-1 text-center ${
                                 isActive 
-                                    ? 'bg-brand text-background shadow drop-shadow' 
-                                    : 'bg-surface border border-surface-light text-text-secondary hover:text-white hover:bg-surface-light/50'
+                                    ? 'bg-brand text-white shadow-[0_0_15px_rgba(209,103,42,0.4)] scale-[1.02]' 
+                                    : 'bg-transparent text-text-secondary hover:text-white hover:bg-white/5'
                             }`}
                         >
                             {localMenus[day].name}
@@ -143,6 +149,7 @@ export default function DailyMenuAdminPage() {
 
             {/* Editor Area */}
             <div className={sectionClasses}>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
                 <h2 className={sectionTitleClasses}>Editando: {currentMenu.name}</h2>
                 
                 {activeTab !== 6 && activeTab !== 0 && (
@@ -156,7 +163,7 @@ export default function DailyMenuAdminPage() {
                     <>
                         {renderEditableList('especiais', 'Marmitas Especiais')}
                         
-                        <div className="mt-6 pt-6 border-t border-surface-light">
+                        <div className="mt-6 pt-6 border-t border-white/10 relative z-10">
                             <label className={labelClasses}>Carnes Assadas (Descrição Geral)</label>
                             <input 
                                 type="text"
@@ -183,7 +190,7 @@ export default function DailyMenuAdminPage() {
                     <>
                         {renderEditableList('marmitas', 'Marmitas')}
                         
-                        <div className="mt-6 pt-6 border-t border-surface-light">
+                        <div className="mt-6 pt-6 border-t border-white/10 relative z-10">
                             <label className={labelClasses}>Carnes Assadas (Descrição Geral)</label>
                             <input 
                                 type="text"
@@ -215,7 +222,7 @@ export default function DailyMenuAdminPage() {
                             </div>
                         </div>
 
-                        <div className="mt-8 pt-8 border-t border-surface-light">
+                        <div className="mt-8 pt-8 border-t border-white/10 relative z-10">
                             {renderEditableList('acompanhamentos', 'Acompanhamentos')}
                         </div>
                     </>

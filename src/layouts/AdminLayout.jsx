@@ -141,19 +141,19 @@ export default function AdminLayout() {
       <main className="flex-1 flex flex-col overflow-hidden bg-background h-screen w-full relative z-10">
         
         {/* Mobile Top App Bar */}
-        <div className="md:hidden flex items-center justify-between p-4 bg-[#111111] border-b border-surface-light shrink-0 z-20">
+        <div className="md:hidden flex items-center p-4 bg-[#111111] border-b border-surface-light shrink-0 z-20 gap-4">
+          <button 
+            onClick={() => setIsMobileSidebarOpen(true)}
+            className="text-text-muted hover:text-white transition-colors p-1"
+          >
+            <Menu size={24} />
+          </button>
           <div className="flex items-center gap-3">
             <Flame className="text-brand" size={24} />
             <h1 className="text-brand-light font-serif tracking-widest text-sm font-bold uppercase leading-none">
               CASA DE CARNES
             </h1>
           </div>
-          <button 
-            onClick={() => setIsMobileSidebarOpen(true)}
-            className="text-text-muted hover:text-white transition-colors p-2"
-          >
-            <Menu size={24} />
-          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">

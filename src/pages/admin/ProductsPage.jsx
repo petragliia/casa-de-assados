@@ -78,15 +78,18 @@ export default function ProductsPage() {
 
     return (
         <div className="pb-10 text-text-primary">
-            <header className="flex justify-between items-end mb-10 border-b border-surface-light pb-6">
+            <header className="flex justify-between items-end mb-10 border-b border-white/10 pb-6 relative">
+                <div className="absolute top-0 left-0 w-32 h-32 bg-brand/10 rounded-full blur-[60px] -z-10 pointer-events-none"></div>
                 <div className="flex items-center gap-4">
-                    <Boxes size={32} className="text-brand" />
+                    <div className="p-3 bg-brand/10 rounded-xl border border-brand/20">
+                        <Boxes size={32} className="text-brand" />
+                    </div>
                     <div>
                         <h1 className="text-3xl font-serif font-bold text-white uppercase tracking-wide">Catálogo de Produtos</h1>
                         <p className="text-text-muted font-medium italic mt-1">Gerencie produtos, categorias e valores</p>
                     </div>
                 </div>
-                <Button variant="primary" onClick={() => handleOpenModal()} className="shadow-lg shadow-brand/20">
+                <Button variant="primary" onClick={() => handleOpenModal()} className="shadow-[0_0_20px_rgba(209,103,42,0.3)] hover:shadow-[0_0_30px_rgba(209,103,42,0.5)] transition-all duration-300">
                     <Plus size={20} className="mr-2" />
                     Novo Produto
                 </Button>
@@ -114,12 +117,13 @@ export default function ProductsPage() {
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {categoryProducts.map((product) => (
-                                        <div key={product.id} className="bg-surface border border-surface-light rounded-2xl overflow-hidden group hover:border-brand/30 transition-all duration-300 hover:shadow-xl hover:shadow-brand/5 flex flex-col">
-                                            <div className="h-40 relative bg-background border-b border-surface-light">
+                                        <div key={product.id} className="bg-[#1A1A1A]/60 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden group hover:border-brand/50 hover:bg-[#1A1A1A]/80 transition-all duration-500 hover:shadow-2xl hover:shadow-brand/10 flex flex-col relative z-0">
+                                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 pointer-events-none -z-10"></div>
+                                            <div className="h-40 relative bg-black/40 border-b border-white/5 overflow-hidden">
                                                 <img 
                                                     src={product.image || 'https://via.placeholder.com/300x150?text=Sem+Imagem'} 
                                                     alt={product.name} 
-                                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                                                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
                                                 />
                                                 <div className="absolute top-3 right-3 bg-[#1A1A1A]/90 backdrop-blur-sm border border-surface-light text-text-primary px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">
                                                     {product.unit_type === 'kg' ? 'Venda p/ KG' : 'Venda p/ Unit'}
@@ -134,7 +138,7 @@ export default function ProductsPage() {
                                                     {product.description || <span className="italic text-text-muted">Sem descrição adicionada.</span>}
                                                 </p>
 
-                                                <div className="flex justify-between items-end mt-auto pt-4 border-t border-surface-light">
+                                                <div className="flex justify-between items-end mt-auto pt-4 border-t border-white/5">
                                                     <div>
                                                         <span className="text-[10px] uppercase font-black text-text-muted block mb-1">Preço Atual</span>
                                                         <span className="font-bold text-white text-2xl font-mono">
@@ -145,14 +149,14 @@ export default function ProductsPage() {
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => handleOpenModal(product)}
-                                                            className="p-2.5 bg-background border border-surface-light rounded-xl text-text-secondary hover:text-white hover:border-brand/50 transition-all"
+                                                            className="p-2.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl text-text-secondary hover:text-white hover:border-brand/50 hover:bg-brand/10 hover:shadow-[0_0_15px_rgba(209,103,42,0.2)] transition-all duration-300"
                                                             title="Editar Produto"
                                                         >
                                                             <Edit2 size={16} />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDelete(product.id)}
-                                                            className="p-2.5 bg-background border border-surface-light rounded-xl text-danger/80 hover:text-danger hover:border-danger/50 hover:bg-danger/10 transition-all"
+                                                            className="p-2.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl text-danger/80 hover:text-danger hover:border-danger/50 hover:bg-danger/10 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all duration-300"
                                                             title="Excluir Produto"
                                                         >
                                                             <Trash2 size={16} />
@@ -171,10 +175,11 @@ export default function ProductsPage() {
 
             {/* Form Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-                    <div className="bg-surface rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl border border-surface-light scale-in-center flex flex-col">
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+                    <div className="bg-[#111111]/90 backdrop-blur-xl rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl shadow-black border border-white/10 scale-in-center flex flex-col">
                         
-                        <div className="bg-[#1A1A1A] p-6 border-b border-surface-light flex justify-between items-center shrink-0">
+                        <div className="bg-black/40 p-6 border-b border-white/5 flex justify-between items-center shrink-0 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-[80px] -z-10"></div>
                             <div>
                                 <h2 className="text-2xl font-serif font-bold text-white tracking-wide uppercase">
                                     {editingProduct ? 'Editar Produto' : 'Novo Produto'}
@@ -183,7 +188,7 @@ export default function ProductsPage() {
                                     {editingProduct ? 'Modifique as informações abaixo' : 'Preencha os dados do novo item'}
                                 </p>
                             </div>
-                            <button onClick={handleCloseModal} className="h-10 w-10 bg-background rounded-full border border-surface-light flex items-center justify-center text-text-secondary hover:text-white hover:border-brand transition-all">
+                            <button onClick={handleCloseModal} className="h-10 w-10 bg-black/50 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-danger/50 hover:bg-danger/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all duration-300 relative z-10">
                                 <X size={20} />
                             </button>
                         </div>
@@ -192,7 +197,7 @@ export default function ProductsPage() {
                             <form id="productForm" onSubmit={handleSubmit} className="space-y-8">
                                 {/* Basic Info Section */}
                                 <div className="space-y-6">
-                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-surface-light pb-2">Informações Principais</h3>
+                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-white/10 pb-2">Informações Principais</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Nome do Produto</label>
@@ -202,7 +207,7 @@ export default function ProductsPage() {
                                                 value={formData.name}
                                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                                                 required
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300"
                                             />
                                         </div>
                                         <div>
@@ -212,7 +217,7 @@ export default function ProductsPage() {
                                                 placeholder="Ex: 789123456"
                                                 value={formData.barcode}
                                                 onChange={e => setFormData({ ...formData, barcode: e.target.value })}
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors font-mono"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 font-mono"
                                             />
                                         </div>
                                     </div>
@@ -225,14 +230,14 @@ export default function ProductsPage() {
                                             value={formData.description}
                                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                                             rows={2}
-                                            className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors resize-none"
+                                            className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 resize-none"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Pricing and Types Section */}
                                 <div className="space-y-6">
-                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-surface-light pb-2">Venda & Classificação</h3>
+                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-white/10 pb-2">Venda & Classificação</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div>
                                             <label className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Preço de Venda (R$)</label>
@@ -245,7 +250,7 @@ export default function ProductsPage() {
                                                 value={formData.price}
                                                 onChange={e => setFormData({ ...formData, price: e.target.value })}
                                                 required
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors font-mono font-bold text-xl"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 font-mono font-bold text-xl"
                                             />
                                         </div>
                                         <div>
@@ -254,7 +259,7 @@ export default function ProductsPage() {
                                                 name="unit_type"
                                                 value={formData.unit_type}
                                                 onChange={e => setFormData({ ...formData, unit_type: e.target.value })}
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors appearance-none cursor-pointer"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 appearance-none cursor-pointer"
                                             >
                                                 <option value="unit">Unidade / Porção</option>
                                                 <option value="kg">Peso (KG)</option>
@@ -266,7 +271,7 @@ export default function ProductsPage() {
                                                 name="category"
                                                 value={formData.category}
                                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors appearance-none cursor-pointer"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 appearance-none cursor-pointer"
                                             >
                                                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
                                             </select>
@@ -276,7 +281,7 @@ export default function ProductsPage() {
 
                                 {/* Stock Section */}
                                 <div className="space-y-6">
-                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-surface-light pb-2">Controle de Estoque</h3>
+                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-white/10 pb-2">Controle de Estoque</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Estoque Inicial / Atual</label>
@@ -286,7 +291,7 @@ export default function ProductsPage() {
                                                 step="0.001"
                                                 value={formData.stock}
                                                 onChange={e => setFormData({ ...formData, stock: e.target.value })}
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors font-mono"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 font-mono"
                                             />
                                         </div>
                                         <div>
@@ -298,7 +303,7 @@ export default function ProductsPage() {
                                                 min="0"
                                                 value={formData.minStock}
                                                 onChange={e => setFormData({ ...formData, minStock: e.target.value })}
-                                                className="w-full p-4 bg-background border border-surface-light rounded-xl focus:border-danger/50 text-white outline-none transition-colors font-mono"
+                                                className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-danger focus:ring-2 focus:ring-danger/20 text-white outline-none transition-all duration-300 font-mono"
                                             />
                                         </div>
                                     </div>
@@ -306,10 +311,10 @@ export default function ProductsPage() {
 
                                 {/* Image Section */}
                                 <div className="space-y-6 pb-4">
-                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-surface-light pb-2">Foto Principal</h3>
+                                    <h3 className="text-[10px] font-black uppercase text-brand tracking-widest border-b border-white/10 pb-2">Foto Principal</h3>
                                     <div>
                                         <div className="flex gap-6 items-center">
-                                            <div className="h-24 w-24 bg-background rounded-2xl border-2 border-dashed border-surface-light flex items-center justify-center shrink-0 overflow-hidden relative group">
+                                            <div className="h-24 w-24 bg-black/40 rounded-2xl border-2 border-dashed border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group hover:border-brand/50 transition-colors">
                                                 {formData.image ? (
                                                     <>
                                                         <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
@@ -340,7 +345,7 @@ export default function ProductsPage() {
                                                 />
                                                 <label 
                                                     htmlFor="imageUpload" 
-                                                    className="inline-flex items-center gap-2 px-6 py-3 bg-background border border-surface-light hover:border-brand/50 text-white rounded-xl cursor-pointer transition-all uppercase tracking-widest font-black text-[10px]"
+                                                    className="inline-flex items-center gap-2 px-6 py-3 bg-black/40 border border-white/10 hover:border-brand/50 hover:bg-brand/10 hover:shadow-[0_0_15px_rgba(209,103,42,0.2)] text-white rounded-xl cursor-pointer transition-all duration-300 uppercase tracking-widest font-black text-[10px]"
                                                 >
                                                     <ImageIcon size={16} /> 
                                                     <span>Escolher Imagem...</span>
@@ -353,12 +358,13 @@ export default function ProductsPage() {
                             </form>
                         </div>
                         
-                        <div className="p-6 bg-[#1A1A1A] border-t border-surface-light shrink-0">
+                        <div className="p-6 bg-black/40 border-t border-white/5 shrink-0 relative overflow-hidden">
+                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-24 bg-brand/10 blur-[50px] pointer-events-none"></div>
                             <Button 
                                 variant="primary" 
                                 type="submit"
                                 form="productForm"
-                                className="w-full justify-center py-4 bg-brand hover:bg-brand-light text-white text-md tracking-wider shadow-lg shadow-brand/20"
+                                className="w-full justify-center py-4 bg-brand hover:bg-brand-light text-white text-md tracking-wider shadow-[0_0_20px_rgba(209,103,42,0.4)] hover:shadow-[0_0_30px_rgba(209,103,42,0.6)] transition-all duration-300 border border-brand-light/50 relative z-10"
                             >
                                 <Save size={20} className="mr-2" />
                                 {editingProduct ? 'Salvar Configurações do Produto' : 'Cadastrar Novo Produto'}

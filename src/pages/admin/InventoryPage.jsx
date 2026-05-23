@@ -23,12 +23,15 @@ export default function InventoryPage() {
 
     return (
         <div className="space-y-8 pb-10 text-text-primary">
-            <header className="flex justify-between items-end mb-10">
+            <header className="flex justify-between items-end mb-10 relative">
+                <div className="absolute top-0 left-0 w-32 h-32 bg-brand/10 rounded-full blur-[60px] -z-10 pointer-events-none"></div>
                 <div className="flex items-center gap-4">
-                    <Layers size={32} className="text-brand" />
+                    <div className="p-3 bg-brand/10 rounded-xl border border-brand/20">
+                        <Layers size={32} className="text-brand" />
+                    </div>
                     <div>
                         <h1 className="text-3xl font-serif font-bold text-white uppercase tracking-wide">Gestão de Estoque</h1>
-                        <p className="text-text-muted font-medium italic mt-1">Controle preciso de insumos e produtos</p>
+                        <p className="text-text-muted font-medium italic mt-1 text-sm">Controle preciso de insumos e produtos</p>
                     </div>
                 </div>
                 <div className="relative group">
@@ -36,7 +39,7 @@ export default function InventoryPage() {
                     <input
                         type="text"
                         placeholder="Buscar produto ou código..."
-                        className="pl-12 pr-4 py-3 bg-surface border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none w-72 transition-all shadow-sm focus:shadow-brand/10"
+                        className="pl-12 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none w-72 transition-all duration-300 shadow-lg placeholder:text-text-muted/50"
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
@@ -46,10 +49,11 @@ export default function InventoryPage() {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 {/* Products Table */}
                 <div className="xl:col-span-2 space-y-4">
-                    <div className="bg-surface rounded-2xl shadow-xl border border-surface-light overflow-hidden">
-                        <div className="overflow-x-auto">
+                    <div className="bg-[#1A1A1A]/60 backdrop-blur-md rounded-2xl shadow-2xl shadow-black/20 border border-white/5 overflow-hidden relative z-0">
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none -z-10"></div>
+                        <div className="overflow-x-auto custom-scrollbar">
                             <table className="w-full text-left border-collapse">
-                                <thead className="bg-[#1A1A1A] border-b border-surface-light">
+                                <thead className="bg-black/40 border-b border-white/10">
                                     <tr>
                                         <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted">Produto</th>
                                         <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted text-center">Tipo</th>
@@ -58,14 +62,14 @@ export default function InventoryPage() {
                                         <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted text-right">Ação</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-surface-light/50">
+                                <tbody className="divide-y divide-white/5">
                                     {filteredProducts.map(product => {
                                         const isLow = product.stock <= product.minStock;
                                         return (
-                                            <tr key={product.id} className={`group hover:bg-surface-light/20 transition-colors ${isLow ? 'bg-danger/5' : ''}`}>
+                                            <tr key={product.id} className={`group hover:bg-white/5 transition-all duration-300 ${isLow ? 'bg-danger/5 hover:bg-danger/10' : ''}`}>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-4">
-                                                        <div className="h-12 w-12 rounded-xl bg-background overflow-hidden border border-surface-light flex-shrink-0">
+                                                        <div className="h-12 w-12 rounded-xl bg-black/40 overflow-hidden border border-white/10 flex-shrink-0">
                                                             <img src={product.image || 'https://via.placeholder.com/48?text=S/I'} alt="" className="h-full w-full object-cover opacity-80" />
                                                         </div>
                                                         <div>
@@ -78,7 +82,7 @@ export default function InventoryPage() {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-background border border-surface-light text-text-secondary px-3 py-1.5 rounded-md">
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-black/40 border border-white/10 text-text-secondary px-3 py-1.5 rounded-md">
                                                         {product.unit_type}
                                                     </span>
                                                 </td>
@@ -89,11 +93,11 @@ export default function InventoryPage() {
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
                                                     {isLow ? (
-                                                        <span className="inline-flex items-center justify-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-danger bg-danger/10 border border-danger/20 px-3 py-1.5 rounded-full w-28">
+                                                        <span className="inline-flex items-center justify-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-danger bg-danger/10 border border-danger/30 shadow-[0_0_15px_rgba(239,68,68,0.2)] px-3 py-1.5 rounded-full w-28">
                                                             <AlertTriangle size={12} /> Crítico
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center justify-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-success bg-success/10 border border-success/20 px-3 py-1.5 rounded-full w-28">
+                                                        <span className="inline-flex items-center justify-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-success bg-success/10 border border-success/30 shadow-[0_0_15px_rgba(34,197,94,0.1)] px-3 py-1.5 rounded-full w-28">
                                                             <Check size={12} /> Normal
                                                         </span>
                                                     )}
@@ -101,7 +105,7 @@ export default function InventoryPage() {
                                                 <td className="px-6 py-4 text-right">
                                                     <button
                                                         onClick={() => setAdjModal({ open: true, product, amount: '', reason: '' })}
-                                                        className="p-3 bg-background hover:bg-brand hover:text-white border border-surface-light rounded-xl transition-all text-text-secondary group-hover:border-brand/30"
+                                                        className="p-2.5 bg-black/40 hover:bg-brand/20 text-text-secondary hover:text-white border border-transparent hover:border-brand/50 rounded-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(209,103,42,0.3)]"
                                                         title="Ajuste Manual"
                                                     >
                                                         <Plus size={18} />
@@ -124,17 +128,18 @@ export default function InventoryPage() {
                 </div>
 
                 {/* History Sidebar */}
-                <div className="bg-surface rounded-2xl p-6 border border-surface-light shadow-xl h-fit sticky top-8">
-                    <h2 className="text-lg font-serif font-bold uppercase tracking-widest mb-6 flex items-center gap-3 text-white border-b border-surface-light pb-4">
+                <div className="bg-[#1A1A1A]/60 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-2xl shadow-black/20 h-fit sticky top-8 relative z-0 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-brand/5 rounded-full blur-[60px] -z-10 pointer-events-none"></div>
+                    <h2 className="text-lg font-serif font-bold uppercase tracking-widest mb-6 flex items-center gap-3 text-white border-b border-white/10 pb-4 relative z-10">
                         <History size={20} className="text-brand" /> Histórico
                     </h2>
-                    <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar relative z-10">
                         {inventoryLogs.slice(0, 20).map(log => {
                             const product = products.find(p => p.id === log.productId) || { name: 'Desconhecido', unit_type: 'unit' };
                             const isSale = log.type === 'sale';
                             const isPositive = log.changeAmount > 0;
                             return (
-                                <div key={log.id} className="border-l-2 border-surface-light pl-4 py-1 relative group hover:border-brand/50 transition-colors">
+                                <div key={log.id} className="border-l-2 border-white/10 pl-4 py-1 relative group hover:border-brand/50 transition-colors">
                                     <div className={`absolute -left-[5px] top-2 h-2 w-2 rounded-full ${isSale ? 'bg-text-muted' : (isPositive ? 'bg-success' : 'bg-brand')}`} />
                                     <div className="flex justify-between items-start">
                                         <div>
@@ -144,7 +149,7 @@ export default function InventoryPage() {
                                             <div className="font-bold text-sm text-white uppercase tracking-tight mt-1 truncate max-w-[150px]" title={product.name}>{product.name}</div>
                                             {log.reason && <div className="text-[10px] text-text-secondary mt-1 italic">{log.reason}</div>}
                                         </div>
-                                        <div className={`font-mono font-black text-sm px-2 py-1 rounded bg-background border border-surface-light ${isPositive ? 'text-success' : 'text-brand'}`}>
+                                        <div className={`font-mono font-black text-sm px-2 py-1 rounded bg-black/40 border border-white/10 shadow-sm ${isPositive ? 'text-success' : 'text-brand'}`}>
                                             {isPositive ? '+' : ''}{log.changeAmount.toFixed(product.unit_type === 'kg' ? 3 : 0)}
                                         </div>
                                     </div>
@@ -160,12 +165,13 @@ export default function InventoryPage() {
 
             {/* Adjustment Modal */}
             {adjModal.open && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-                    <div className="bg-surface rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-surface-light scale-in-center">
-                        <div className="bg-[#1A1A1A] p-6 border-b border-surface-light">
-                            <div className="flex justify-between items-center">
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+                    <div className="bg-[#111111]/90 backdrop-blur-xl rounded-2xl w-full max-w-md overflow-hidden shadow-2xl shadow-black border border-white/10 scale-in-center relative z-0">
+                        <div className="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent pointer-events-none -z-10"></div>
+                        <div className="bg-black/40 p-6 border-b border-white/5 relative">
+                            <div className="flex justify-between items-center relative z-10">
                                 <h3 className="text-xl font-serif font-bold text-white tracking-wide uppercase">Ajuste de Estoque</h3>
-                                <div className="h-10 w-10 bg-background rounded-lg border border-surface-light flex items-center justify-center flex-shrink-0">
+                                <div className="h-10 w-10 bg-black/50 rounded-lg border border-white/10 flex items-center justify-center flex-shrink-0">
                                     <img src={adjModal.product?.image || 'https://via.placeholder.com/40'} alt="" className="h-8 w-8 object-cover rounded opacity-80" />
                                 </div>
                             </div>
@@ -182,7 +188,7 @@ export default function InventoryPage() {
                                         step="0.001"
                                         required
                                         placeholder="Ex: -2.5 ou +10"
-                                        className="w-full text-2xl font-black font-mono p-4 bg-background border border-surface-light rounded-xl focus:border-brand/50 text-white outline-none transition-colors"
+                                        className="w-full text-2xl font-black font-mono p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 placeholder:text-text-muted/30"
                                         value={adjModal.amount}
                                         onChange={e => setAdjModal({ ...adjModal, amount: e.target.value })}
                                     />
@@ -198,15 +204,15 @@ export default function InventoryPage() {
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Motivo / Observação</label>
                                 <input
                                     placeholder="Ex: Quebra, Devolução, etc."
-                                    className="w-full p-4 bg-background border border-surface-light rounded-xl outline-none focus:border-brand/50 text-white transition-colors"
+                                    className="w-full p-4 bg-black/40 border border-white/10 rounded-xl focus:border-brand focus:ring-2 focus:ring-brand/20 text-white outline-none transition-all duration-300 placeholder:text-text-muted/50"
                                     value={adjModal.reason}
                                     onChange={e => setAdjModal({ ...adjModal, reason: e.target.value })}
                                     required
                                 />
                             </div>
-                            <div className="flex gap-4 pt-4 border-t border-surface-light">
-                                <Button variant="secondary" className="flex-1 bg-background text-text-primary hover:text-white" onClick={() => setAdjModal({ open: false, product: null, amount: '', reason: '' })}>Cancelar</Button>
-                                <Button variant="primary" className="flex-1" type="submit">Confirmar Ajuste</Button>
+                            <div className="flex gap-4 pt-6 mt-2 border-t border-white/5 relative z-10">
+                                <Button variant="secondary" className="flex-1 bg-black/40 border border-white/10 text-text-secondary hover:text-white transition-all duration-300" onClick={() => setAdjModal({ open: false, product: null, amount: '', reason: '' })}>Cancelar</Button>
+                                <Button variant="primary" className="flex-1 shadow-[0_0_15px_rgba(209,103,42,0.3)] hover:shadow-[0_0_25px_rgba(209,103,42,0.5)] transition-all duration-300" type="submit">Confirmar Ajuste</Button>
                             </div>
                         </form>
                     </div>

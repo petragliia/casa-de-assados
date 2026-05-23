@@ -75,7 +75,66 @@ export function StoreProvider({ children }) {
 
         fetchAllData();
 
-        // Optional: Realtime subscriptions could go here
+        // 7. Supabase Real-time Subscriptions
+        const ordersChannel = supabase
+            .channel('realtime-orders')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, async (payload) => {
+                try {
+                    const { data: newOrder, error } = await supabase
+                        .from('orders')
+                        .select(`*, items:order_items(*)`)
+                        .eq('id', payload.new.id)
+                        .single();
+                    
+                    if (newOrder && !error) {
+                        const formatted = {
+                            ...newOrder,
+                            db_id: newOrder.id,
+                            id: `#${newOrder.order_number}`,
+                            date: newOrder.created_at,
+                            payment: {
+                                method: newOrder.payment_method,
+                                change: 0
+                            }
+                        };
+                        setOrders(prev => {
+                            if (prev.some(o => o.db_id === formatted.db_id)) return prev;
+                            return [formatted, ...prev];
+                        });
+                    }
+                } catch (err) {
+                    console.error("Erro no processamento em tempo real do novo pedido:", err);
+                }
+            })
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, (payload) => {
+                setOrders(prev => prev.map(o => o.db_id === payload.new.id ? {
+                    ...o,
+                    status: payload.new.status,
+                    cancellation_reason: payload.new.cancellation_reason
+                } : o));
+            })
+            .subscribe();
+
+        const productsChannel = supabase
+            .channel('realtime-products')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+                if (payload.eventType === 'INSERT') {
+                    setProducts(prev => {
+                        if (prev.some(p => p.id === payload.new.id)) return prev;
+                        return [...prev, payload.new];
+                    });
+                } else if (payload.eventType === 'UPDATE') {
+                    setProducts(prev => prev.map(p => p.id === payload.new.id ? payload.new : p));
+                } else if (payload.eventType === 'DELETE') {
+                    setProducts(prev => prev.filter(p => p.id !== payload.old.id));
+                }
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(ordersChannel);
+            supabase.removeChannel(productsChannel);
+        };
     }, []);
 
     // Actions
